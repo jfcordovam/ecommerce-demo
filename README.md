@@ -7,16 +7,16 @@ This project demonstrates clean architecture patterns, state management, and API
 
 ## Tech Stack
 
-- ⚛️ **React 19**
-- ⚡ **Vite**
-- 🧠 **Redux Toolkit (Ducks + Thunks)**
-- 🧩 **TypeScript**
-- 🌐 **React Router**
-- 🎨 **Modular Architecture** - Inspired by Feature-Sliced Design (https://feature-sliced.design/)
+- **React 19**
+- **Vite**
+- **Redux Toolkit (Ducks + Thunks)**
+- **TypeScript**
+- **React Router**
+- **Modular Architecture** - Inspired by Feature-Sliced Design (https://feature-sliced.design/)
 
 ---
 
-## 🧱 Features
+## Features
 
 - Product list with live API (`https://fakestoreapi.com`)  
 - Dynamic product detail pages  
@@ -26,18 +26,38 @@ This project demonstrates clean architecture patterns, state management, and API
 
 ---
 
-## 🧰 Project Structure
+## Project Structure
 
+```bash
 src/
-├── app/ # Store, router, and global config
-├── modules/ # Ducks (state logic per domain)
-├── pages/ # Page-level React components
-├── shared/ # Reusable UI and utilities
-
+├── app/                # Global app configuration (store, router, routes)
+│   ├── store.ts        # Redux store setup
+│   ├── Router.tsx      # Main route configuration
+│   └── routes.ts       # Centralized route constants (ROUTES)
+│
+├── modules/            # Business logic grouped by domain
+│   └── products/       # Redux slice + thunks (productDuck)
+│       └── components/ # Product-related UI components     
+│
+├── pages/              # Top-level pages mapped to routes
+│   ├── Home.tsx
+│   └── products/
+│       ├── OffersPage.tsx
+│       └── ProductDetailPage.tsx
+│
+├── shared/             # Reusable components, hooks, and utilities
+│   ├── components/
+│   ├── hooks/
+│   └── utils/
+│
+├── App.tsx             # Root layout (contains <Outlet /> for nested routes)
+├── main.tsx            # App entry point (ReactDOM + Redux Provider)
+└── index.css           # Global styles
+```
 
 ---
 
-## 🧪 Run Locally
+## Run Locally
 
 ```bash
 # Clone the repo

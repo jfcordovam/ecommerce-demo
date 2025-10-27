@@ -1,4 +1,4 @@
-import { ProductList } from '@modules/Products'
+import { ProductList } from '@/modules/products'
 
 function OffersPage() {
 

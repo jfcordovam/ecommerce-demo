@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "@/app/store";
-import { fetchProductById } from "@/modules/Products";
+import { fetchProductById } from "@/modules/products";
 import { ROUTES } from "@/app/routes";
-import { ProductDetail } from "@modules/Products/components/ProductDetail";
+import { ProductDetail } from "@/modules/products/components/ProductDetail";
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
