@@ -1,3 +1,4 @@
-export { default as productsReducer } from './productsDuck';
-export * from './productsDuck';
-export { ProductList } from './components/ProductList';
+export { default as productsReducer } from './state/productDuck';
+export * from './state/productDuck';
+export * from './state/selectors';
+export * from './components';

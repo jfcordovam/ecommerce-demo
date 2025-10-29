@@ -3,19 +3,19 @@ import {
   createAsyncThunk,
   type PayloadAction,
 } from '@reduxjs/toolkit';
-import type { Product } from './types';
-import axios from 'axios';
+import type { Product } from '../types/product';
+import { productRepository } from '../api/repository';
 
 export interface ProductsState {
-  productList: Product[];
-  selectedProduct: Product | null;
+  list: Product[];
+  selected?: Product;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: ProductsState = {
-  productList: [],
-  selectedProduct: null,
+  list: [],
+  selected: undefined,
   loading: false,
   error: null,
 };
@@ -24,17 +24,15 @@ const initialState: ProductsState = {
 export const fetchProducts = createAsyncThunk<Product[]>(
   'products/fetchAll',
   async () => {
-    const response = await axios.get('https://fakestoreapi.com/products');
-    return response.data;
+    return await productRepository.getAll();
   }
-);
+); 
 
 // Thunk: fetch single product by ID
-export const fetchProductById = createAsyncThunk<Product, string | number>(
+export const fetchProductById = createAsyncThunk(
   'products/fetchById',
-  async (id) => {
-    const response = await axios.get(`https://fakestoreapi.com/products/${id}`);
-    return response.data;
+  async (id: string | number) => {
+    return await productRepository.getById(id);
   }
 );
 
@@ -43,12 +41,12 @@ const productsSlice = createSlice({
   initialState,
   reducers: {
     clearProducts(state) {
-      state.productList = [];
-      state.selectedProduct = null;
+      state.list = [];
+      state.selected = undefined;
       state.error = null;
     },
     clearSelectedProduct(state) {
-      state.selectedProduct = null;
+      state.selected = undefined;
     },
   },
   extraReducers: (builder) => {
@@ -62,7 +60,7 @@ const productsSlice = createSlice({
         fetchProducts.fulfilled,
         (state, action: PayloadAction<Product[]>) => {
           state.loading = false;
-          state.productList = action.payload;
+          state.list = action.payload;
         }
       )
       .addCase(fetchProducts.rejected, (state, action) => {
@@ -75,20 +73,20 @@ const productsSlice = createSlice({
       .addCase(fetchProductById.pending, (state) => {
         state.loading = true;
         state.error = null;
-        state.selectedProduct = null;
+        state.selected = undefined;
       })
       .addCase(
         fetchProductById.fulfilled,
         (state, action: PayloadAction<Product>) => {
           state.loading = false;
-          state.selectedProduct = action.payload;
+          state.selected = action.payload;
 
           // if not in list, add it
-          const exists = state.productList.some(
+          const exists = state.list.some(
             (p) => p.id === action.payload.id
           );
           if (!exists) {
-            state.productList.push(action.payload);
+            state.list.push(action.payload);
           }
         }
       )

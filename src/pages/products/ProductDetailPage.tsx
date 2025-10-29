@@ -1,22 +1,29 @@
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import type { RootState, AppDispatch } from "@/app/store";
+import type { AppDispatch } from "@/app/store";
 import { fetchProductById } from "@/modules/products";
 import { ROUTES } from "@/app/routes";
 import { ProductDetail } from "@/modules/products/components/ProductDetail";
+import {
+  selectSelectedProduct,
+  selectProductsLoading,
+  selectProductsError,
+  selectProducts
+} from "@modules/products";
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  const { productList, selectedProduct, loading, error } = useSelector(
-    (state: RootState) => state.products
-  );
+  const productFromState = useSelector(selectSelectedProduct);
+  const products = useSelector(selectProducts);
+  const loading = useSelector(selectProductsLoading);
+  const error = useSelector(selectProductsError);
 
   const product =
-    productList.find((product) => product?.id?.toString() === id) || selectedProduct || null;
+    products.find((product) => product?.id?.toString() === id) || productFromState || null;
 
   useEffect(() => {
     if (!product && id) {
